@@ -2,99 +2,137 @@
 
 Channel Aidrop Free : https://t.me/HVchannelss
 
-Auto Cliam + Auto FLip
-==========================================================
-       SPACEAGRI AUTO TOOL – HƯỚNG DẪN SỬ DỤNG (RAW)
-==========================================================
+# 🚀 SPACEAGRI AUTO TOOL — HƯỚNG DẪN SỬ DỤNG
 
-I. FILE CẦN CHUẨN BỊ
---------------------
+Tool dùng để **auto login ví Solana**, **auto claim MB**, **auto flip**, **auto mint**, lưu log vào file, hỗ trợ **proxy**, **đa luồng**, và **random User-Agent**.
 
-1) privatekey.txt
-   - Mỗi dòng 1 private key Solana (dạng base58 – 64 bytes)
-   - Ví dụ:
-        5K3xvFxxxxx...
-        4fPq9xxxxx...
-
-2) user_agents.txt
-   - Mỗi dòng 1 User-Agent trình duyệt
-   - Tool sẽ random mỗi lần gửi request
-
-3) proxy.txt (tùy chọn)
-   - Format hỗ trợ:
-        http://user:pass@ip:port
-        http://ip:port
-   - Tool tự động tránh proxy đang dùng
-   - Proxy die → tự nhảy sang proxy khác
-
-4) profile.txt (tự tạo)
-   - Không cần chuẩn bị
-   - Tool tự tạo và tự cập nhật khi chạy
-   - Không trùng dòng, không ghi đè bừa bãi
-   - Format:
-        PrivateKey | Address | MB | pre$SPAG
-
-
-II. CÁCH CHẠY TOOL
---------------------
-
-1) Cài Node.js 18+
-2) Cài thư viện:
-        npm install axios bs58 tweetnacl https-proxy-agent
-
-3) Chạy lệnh:
-        node up.js
-
-
-III. GIẢI THÍCH CÂU HỎI KHI CHẠY
------------------------------------
-
-- Dùng Proxy (Y/N):
-      Y → chạy bằng proxy.txt
-      N → kết nối trực tiếp
-
-- Số luồng:
-      Số ví chạy song song
-      Ví dụ 10 luồng = xử lý 10 ví cùng lúc
-
-
-IV. CƠ CHẾ TOOL
---------------------
-
-1) Lấy nonce → ký Solana → login
-2) Lấy stats trước khi claim
-3) Flip tối đa 3 lần nếu đủ MB
-4) Mint
-5) Lấy stats sau khi claim
-6) Ghi lại thông tin vào profile.txt
-
-7) Hệ thống tránh lỗi:
-   - Proxy die → đổi proxy
-   - User-Agent random
-   - 1 ví chỉ xử lý đúng 1 lần rồi delay 5–15s
-   - Auto Restart sau 24h để tránh treo
-
-8) profile.txt tự cập nhật:
-   - Nếu PrivateKey đã tồn tại → update MB & SPAG
-   - Nếu PK mới → thêm dòng mới
-   - Không bao giờ trùng lặp
-
-
-V. LOG HIỂN THỊ HACKER STYLE
-----------------------------
-
-W 12 | IP:123.45.67.89 | UA OK ✔ | Claim:+145.3 MB 
-     | MB: 20344.12 | Flip: 3 | pre$SPAG: 554.22 | Delay: 11s...
-
-
-VI. LƯU Ý QUAN TRỌNG
-----------------------
-
-- Private key phải đúng dạng Solana SecretKey (64 bytes) decode bs58
-- Không dùng private key 32 bytes → tool bỏ qua
-- Nếu API SpaceAgri lag → tool tự retry
-- Định dạng file phải UTF-8
 ---
+
+# 📌 1. YÊU CẦU MÔI TRƯỜNG
+
+## Cài Node.js
+Tải Node.js (LTS) tại:
+https://nodejs.org/
+
+css
+Sao chép mã
+
+## Cài thư viện cần thiết
+Chạy lệnh:
+```bash
+npm install axios bs58 tweetnacl https-proxy-agent
+📌 2. CẤU TRÚC THƯ MỤC
+scss
+Sao chép mã
+📂 SpaceAgriTool
+│── tool.js
+│── privatekey.txt
+│── proxy.txt
+│── user_agents.txt
+└── profile.txt (tự tạo)
+📌 3. NỘI DUNG CÁC FILE TXT
+✔ privatekey.txt
+Mỗi dòng 1 private key dạng base58:
+
+Sao chép mã
+8sKJd2xxxxxxx...
+7hbTxxxxxxx...
+✔ proxy.txt
+perl
+Sao chép mã
+http://user:pass@ip:port
+socks5://user:pass@ip:port
+ip:port
+✔ user_agents.txt
+Sao chép mã
+Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+Mozilla/5.0 (Linux; Android 10)
+✔ profile.txt (tự tạo)
+Tool tự ghi thông tin ví:
+
+less
+Sao chép mã
+privateKey | address | totalMB | preSPAG
+📌 4. CÁCH CHẠY TOOL
+Bước 1 — tạo file txt đầy đủ
+privatekey.txt
+
+proxy.txt
+
+user_agents.txt
+
+Bước 2 — chạy tool
+bash
+Sao chép mã
+node tool.js
+Bước 3 — nhập cấu hình
+mathematica
+Sao chép mã
+• Dùng proxy? (Y/N):
+• Nhập số luồng:
+📌 5. TOOL HOẠT ĐỘNG NHƯ THẾ NÀO
+Đọc privatekey.txt
+
+Random User-Agent
+
+Nếu bật proxy → chọn proxy an toàn
+
+Lấy nonce → ký → login
+
+Lấy stats MB
+
+Auto flip (tối đa 3 lần nếu MB ≥ 10000)
+
+Auto mint
+
+Ghi lại vào profile.txt
+
+Delay random 5–15s
+
+Lặp ví tiếp theo
+
+Auto restart sau 24h
+
+📌 6. LỆNH QUAN TRỌNG TRONG TOOL
+Chạy nhanh:
+bash
+Sao chép mã
+node tool.js
+Xem log profile:
+bash
+Sao chép mã
+cat profile.txt
+Thêm private key:
+txt
+Sao chép mã
+dán thêm dòng mới vào privatekey.txt
+📌 7. LƯU Ý QUAN TRỌNG
+Private Key phải dạng base58 Solana
+
+Không dùng JSON dạng { "mnemonic": ... }
+
+Proxy die → tool tự đổi
+
+Chạy node 18+
+
+Proxy txt có thể reload khi tool đang chạy
+
+📌 8. TOOL DÙNG ĐỂ LÀM GÌ?
+Tool này giúp bạn tự động farm dự án SpaceAgri, bao gồm:
+
+Login ví tự động
+
+Claim MB tự động
+
+Flip kiếm preSPAG tự động
+
+Mint tự động
+
+Chạy nhiều ví cùng lúc
+
+➡️ Hoàn toàn tự động – không cần thao tác tay.
+
+
 
 # ❤️ Support the Developer (Donate)
 
